@@ -20,7 +20,7 @@ Install
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
-    RewriteBase {Twojaścieżka}/web/
+    RewriteBase {YourPath}/web/
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [QSA,L]
 </IfModule>
