@@ -1,0 +1,27 @@
+{% block comments %}
+    <p>
+        <a href="{{ url('/tags/manage', {'idpost': idpost|e}) }}" title="Add tag">
+            <button type="button" class="btn btn-success">Dodaj Tag</button>
+        </a>
+    </p>
+    {% for tag in tags %}
+        <div class="col-lg-12 text-center">
+            <p>
+                {{ tag.title|e }}
+            </p>
+            </p>
+
+            <p>
+                <a href="{{ url('/tags/edit', {'idtag': tag.idtag|e}) }}"
+                   title="Edit tag">
+                    <button type="button" class="btn btn-warning">Edytuj tag</button>
+                </a>
+                <a href="{{ url('/tags/delete', {'idtag': tag.idtag|e}) }}"
+                   title="Delete tag">
+                    <button type="button" class="btn btn-danger">Usuń tag</button>
+                </a>
+            </p>
+            <hr>
+        </div>
+    {% endfor %}
+{% endblock %}

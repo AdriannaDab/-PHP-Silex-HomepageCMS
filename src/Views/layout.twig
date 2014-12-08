@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ app.request.basepath }}/fx/css/bootstrap.css" rel="stylesheet"
+          media="screen">
+    <link href="{{ app.request.basepath }}/fx/css/business-casual.css"
+          rel="stylesheet" media="screen">
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="{{ app.request.basepath }}/fx/js/bootstrap.js"></script>
+    <script src="{{ app.request.basepath }}/fx/js/jquery-1.10.2.js"></script>
+
+    <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+    <script>
+        tinymce.init({selector: 'textarea'});
+    </script>
+
+
+</head>
+
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% include 'menu_top.twig' %}
+    {% endif %}
+</nav>
+
+<div class="brand">
+    <a href="{{ app.request.basepath }}">Strona domowa</a></div>
+<div class="address-bar">Wszystko o nas</div>
+
+<nav class="navbar navbar-default" role="navigation">
+    {% include 'menu.twig' %}
+</nav>
+
+<div class="container">
+    <div>
+        {% for flashMessage in app.session.getFlashBag.get('message') %}
+            <div class="alert alert-{{ flashMessage.type }}">
+                {{ flashMessage.content }}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="box">
+            {% block content %}{% endblock %}
+            {% block comments %}{% endblock %}
+            {% block tags %}{% endblock %}
+            {% block rates %}{% endblock %}
+            {% block feedback %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                {% include 'footer.twig' %}
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Zaloguj{% endblock %}
+
+{% block content %}
+    <hr>
+    <h2 class="intro-text text-center">Zaloguj</h2>
+    <hr>
+
+    <form role="form" action="{{ path('albums_login_check') }}" method="post">
+        {{ error }}
+        {{ form_widget(form) }}
+        <input class="btn" type="submit" name="submit">
+    </form>
+
+{% endblock %}

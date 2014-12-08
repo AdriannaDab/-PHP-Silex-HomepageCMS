@@ -1,0 +1,22 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <p>
+        <a href="{{ url('/tags/connect', {'idpost': idpost|e}) }}" title="Add tag">
+            <button type="button" class="btn btn-success">Dodaj tag</button>
+        </a>
+    </p>
+    {% for tag in tags %}
+        <div class="col-lg-12 text-center">
+            <p>
+                {{ tag.title|e }}
+                <a href="{{ url('/tags/disconnect',{'idpost': idpost|e, 'idtag': tag.idtag|e}) }}"
+                   title="Delete tag">
+                    <button type="button" class="btn btn-danger">Usuń tag</button>
+                </a>
+            </p>
+            <hr>
+        </div>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'layout.twig' %}
+
+{% block left_column %}
+    <p>
+        <a href="{{ url('/posts/add') }}" title="Add Post">
+            <button type="button" class="btn btn-success">Dodaj post</button>
+        </a>
+    </p>
+{% endblock %}
+
+{% block contet %}
+    {% if posts|length > 0 %}
+        <div>
+            {% for post in posts %}
+                <a href="{{ url('/posts/view', {'id': post.idpost|e}) }}" title="View post">
+                    <h2>
+                        {{ post.title|e }}
+                    </h2>
+                </a>
+                <p>
+                <p>
+                    {{ post.published_date|e }}
+                    {{ post.idcategory|e }}
+                </p>
+                <p>
+                    {{ post.content|e }}
+                </p>
+                <p>
+                    <a href="{{ url('/posts/edit', {'id': post.idpost|e}) }}" title="Edytuj post">
+                        <button type="button" class="btn btn-warning">Edytuj post</button>
+                    </a>
+                    <a href="{{ url('/posts/delete', {'id': post.idpost|e}) }}" title="Usuń post">
+                        <button type="button" class="btn btn-danger">Usuń post</button>
+                    </a>
+                </p>
+                </p>
+            {% endfor %}
+        </div>
+        <div>
+            {% if paginator.page > 1 %}
+                {% set previous = (paginator.page - 1) %}
+                <a href="{{ url('/posts/', {'page': previous}) }}" title="previous page">
+                    <button type="button" class="btn btn-default">Poprzednia</button>
+                </a>
+            {% endif %}
+
+            {% if paginator.page < paginator.pagesCount %}
+                {% set next = (paginator.page + 1) %}
+                <a href="{{ url('/posts/', {'page': next}) }}" title="next page">
+                    <button type="button" class="btn btn-default">Następna</button>
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>
+            Nie znaleziono strony.
+        </p>
+    {% endif %}
+{% endblock %}

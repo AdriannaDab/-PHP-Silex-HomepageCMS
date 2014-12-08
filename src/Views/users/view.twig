@@ -1,0 +1,14 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+
+    <div>
+        <hr>
+        <h2 class="intro-text text-center">{{ user.nickname|e }}</h2>
+        <hr>
+        <p>{{ user.email|e }}</p>
+
+        <p><a href="{{ user.homesite }}">{{ user.homesite|e }}</a></p>
+    </div>
+{% endblock %}
+{% block comments %}{% endblock %}

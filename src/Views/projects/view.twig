@@ -1,0 +1,52 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <div class="col-lg-12 text-center">
+        <div class=" text-center">
+
+            {{ render( path('/photos/',{'idproject': project.idproject|e})) }}
+        </div>
+        <hr>
+        <h2 class="intro-text text-center">
+            <a href="{{ url('/projects/view', {'id': project.idproject|e}) }}"
+               title="View project">
+                {{ project.title|e }}
+            </a>
+        </h2>
+        <hr>
+
+        <div>
+            {{ render( path('/rates/view',{'idproject': project.idproject|e})) }}
+        </div>
+        <a href="{{ url('/rates/add', {'idproject': project.idproject|e}) }}"
+           title="Add rate">
+            <button type="button" class="btn btn-success">Oceń</button>
+        </a>
+        <hr>
+        <p>{{ project.description|raw }}</p>
+        <hr>
+        {% if is_granted('ROLE_ADMIN') %}
+            <p>
+                <a href="{{ url('/photos/upload', {'idproject': project.idproject|e}) }}"
+                   title="Add Photos">
+                    <button type="button" class="btn btn-success">Dodaj zdjęcie</button>
+                </a>
+                <a href="{{ url('/projects/edit', {'id': project.idproject|e}) }}"
+                   title="Edit project">
+                    <button type="button" class="btn btn-warning">Edytuj projekt
+                    </button>
+                </a>
+                <a href="{{ url('/projects/delete', {'id': project.idproject|e}) }}"
+                   title="Delete project">
+                    <button type="button" class="btn btn-danger">Usuń projekt
+                    </button>
+                </a>
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block feedback %}
+    <div>
+        {{ render( path('/feedback/',{'idproject': project.idproject|e})) }}
+    </div>
+{% endblock %}

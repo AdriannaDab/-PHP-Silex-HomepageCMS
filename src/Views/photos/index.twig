@@ -1,0 +1,41 @@
+{% block photos %}
+
+    {% if photos|length > 0 %}
+        <div id="carousel-example-generic" class="carousel slide">
+            <!-- Indicators -->
+
+            <ol class="carousel-indicators hidden-xs">
+                {% for photo in photos %}
+                    <li data-target="#carousel-example-generic"
+                        data-slide-to="{{ photo.idphoto|e - 1 }}" class=""></li>
+                {% endfor %}
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                {% for photo in photos %}
+                    <div class="item">
+                        <img class="img-responsive img-full"
+                             src="{{ app.request.basepath }}/media/{{ photo.name|e }}"
+                             alt="{{ photo.alt|e }}">
+
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                $('.carousel-inner div:first').addClass('active');
+                $('.carousel-indicators li:first').addClass('active');
+            </script>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-example-generic"
+               data-slide="prev">
+                <span class="icon-prev"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic"
+               data-slide="next">
+                <span class="icon-next"></span>
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <hr>
+    <h2 class="intro-text text-center">
+        Dodaj tag
+    </h2>
+    <hr>
+    <p>
+        <a href="{{ url('/tags/add') }}" title="Add tag">
+            <button type="button" class="btn btn-success">Dodaj nowy Tag</button>
+        </a>
+    </p>
+    <form action="" method="post">
+        {{ form_widget(form) }}
+        <input type="submit" name="submit"/>
+    </form>
+
+{% endblock %}

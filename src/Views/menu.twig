@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu_collapse_1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span class="navbar-brand">Menu</span>
+    </div>
+
+    <div class="collapse navbar-collapse navbar-ex1-collapse" id="menu_collapse_1">
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="{{ path('/pages/aboutme') }}">O mnie</a>
+            </li>
+            <li>
+                <a href="{{ path('/posts/') }}">Blog</a>
+            </li>
+            <li>
+                <a href="{{ path('/projects/') }}">Portfolio</a>
+            </li>
+            <li>
+                <a href="{{ path('/pages/contact') }}">Kontakt</a>
+            </li>
+            <li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') == NULL %}
+                    <a href="{{ path('/auth/login') }}">Zaloguj</a>
+                {% endif %}
+            </li>
+            <li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY')==NULL %}
+                    <a href="{{ path('/users/add') }}">Rejestracja</a>
+                {% endif %}
+            </li>
+
+        </ul>
+    </div>
+</div>

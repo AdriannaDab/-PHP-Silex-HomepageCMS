@@ -1,0 +1,209 @@
+<?php
+ /**
+ * Pages model
+ *
+ * PHP version 5
+ *
+ * @category Model
+ * @package  Model
+ * @author   Magdalena Limanówka <m.limanowka@uj.edu.pl>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  SVN: $id$
+ * @link     wierzba.wzks.uj.edu.pl/~12_limanowka
+ */
+namespace Model;
+
+use Silex\Application;
+
+/**
+ * @category Model
+ * @package  Model
+ * @author   Magdalena Limanówka <m.limanowka@uj.edu.pl>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  Release: <package_version>
+ * @link     wierzba.wzks.uj.edu.pl/~12_limanowka
+ * @uses Doctrine\DBAL\DBALException
+ * @uses Silex\Application
+ */
+class PagesModel
+{
+
+    /**
+     * Database access object.
+     *
+     * @access protected
+     * @var $_db Doctrine\DBAL
+     */
+    protected $_db;
+
+    /**
+     * Constructor
+     *
+     * @access public
+     * @param Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->_db = $app['db'];
+    }
+
+    /**
+     * Get Page
+     *
+     * @param $name Page name
+     *
+     * @access public
+     * @return array Array with pages attributes and values
+     */
+    public function getPage($name)
+    {
+        $sql = 'SELECT pages.*, pages_attributes.*, pages_values.*
+                FROM pages
+                join pages_values
+                on pages.idpage = pages_values.idpage
+                join pages_attributes
+                on pages_values.idattribute = pages_attributes.idattribute
+                where pages.title = ?';
+
+        return $this->_db->fetchall($sql, array($name));
+    }
+
+    /**
+     * Get page id
+     *
+     * @param $name
+     *
+     * @access public
+     * @return Array Associative array with id page
+     */
+    public function getPageId($name)
+    {
+        $sql = 'SELECT * FROM pages WHERE title = ?';
+
+        return $this->_db->fetchAssoc($sql, array($name));
+    }
+
+
+    /**
+     * Get information
+     *
+     * @param $idpage page id
+     *
+     * @access public
+     * @return Array array with page information
+     */
+    public function getInformation($idpage)
+    {
+        $sql = 'SELECT * FROM pages_attributes
+        right join pages_values
+        on pages_attributes.idattribute = pages_values.idattribute
+        where idpage = ?;';
+        return $this->_db->fetchAll($sql, array($idpage));
+    }
+
+    /**
+     * Update page
+     *
+     * @param array $data Array with page information
+     *
+     * @access public
+     * @return bool true if updeted
+     */
+    public function updatePage($data)
+    {
+        $pageValues = 'SELECT * FROM pages_attributes
+        right join pages_values
+        on pages_attributes.idattribute = pages_values.idattribute
+        where idpage = ?';
+        $attriubutesNames = $this->_db
+            ->fetchAll($pageValues, array($data['idpage']));
+
+        foreach ($attriubutesNames as $attribute) {
+            foreach ($data as $key => $value) {
+                if ($attribute['title'] == $key) {
+                    $sql = 'UPDATE pages_values 
+                        SET content = ? 
+                        WHERE idpage = ?  
+                        AND idattribute = ?';
+                    $this->_db->executeQuery(
+                        $sql, array(
+                            $value, 
+                            $data['idpage'], 
+                            $attribute['idattribute']
+                        )
+                    );
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Update attibutes value from contact
+     *
+     * @param array $data Array with contact information
+     *
+     * @access public
+     * @return bool true if updates.
+     */
+    public function updateContact($data)
+    {
+        $pageValues = 'SELECT * FROM pages_attributes
+        right join pages_values
+        on pages_attributes.idattribute = pages_values.idattribute
+        where idpage = 2';
+        $attriubutesNames = $this->_db->fetchAll($pageValues);
+
+        foreach ($attriubutesNames as $attribute) {
+            foreach ($data as $key => $value) {
+                if ($attribute['title'] == $key) {
+                    $sql = 'UPDATE `pages_values` 
+                            SET content = ? 
+                            WHERE `idpage`= 2  
+                            AND `idattribute`=?';
+                    $this->_db->executeQuery(
+                        $sql, array(
+                            $value, 
+                            $attribute['idattribute']
+                        )
+                    );
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get page attribute
+     *
+     * @param $idpage page id
+     *
+     * @access public
+     * @return Array array with attributes
+     */
+    public function getFields($idpage)
+    {
+        $sql = 'SELECT * 
+                FROM pages_values 
+                natural join pages_attributes 
+                where idpage = ?;';
+        return $this->_db->fetchAll($sql, array($idpage));
+    }
+
+    /**
+     * Change key in categories array
+     *
+     * @access public
+     * @return Array tags array.
+     */
+
+    public function getPageDict()
+    {
+        $categories = $this->getCategories();
+        $data = array();
+        foreach ($categories as $row) {
+            $data[$row['idcategory']] = $row['name'];
+        }
+        return $data;
+    }
+}

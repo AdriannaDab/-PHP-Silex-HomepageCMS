@@ -1,0 +1,274 @@
+body {
+    background: url(../img/bg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 400;
+}
+
+p {
+    font-size: 1.25em;
+    line-height: 1.6;
+    color: #000;
+}
+
+hr {
+    border-color: #999999;
+    max-width: 400px;
+}
+
+.brand,
+.address-bar {
+    display: none;
+}
+
+.navbar-brand {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 900;
+}
+
+.navbar-nav {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 400;
+}
+
+.img-full {
+    min-width: 100%;
+}
+
+.brand-name {
+    font-weight: 700;
+    font-size: 1.5em;
+    text-transform: capitalize;
+    letter-spacing: normal;
+}
+
+.tagline-divider {
+    margin: 15px auto 3px;
+    border-color: #999999;
+    max-width: 250px;
+}
+
+.box {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    padding: 30px 15px;
+}
+
+.intro-text {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.img-border {
+    float: none;
+    margin: 0 auto 0;
+    border: #999999 solid 1px;
+}
+
+.img-left {
+    float: none;
+    margin: 0 auto 0;
+}
+
+footer {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+footer p {
+    margin: 0;
+    padding: 50px 0;
+}
+
+@media screen and (min-width: 768px) {
+
+    .brand {
+        display: inherit;
+        font-weight: 700;
+        font-size: 5em;
+        line-height: normal;
+        text-align: center;
+        margin: 0;
+        padding: 30px 0 10px;
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .top-divider {
+        margin-top: 0;
+    }
+
+    .img-left {
+        float: left;
+        margin-right: 25px;
+    }
+
+    .address-bar {
+        display: inherit;
+        text-align: center;
+        margin: 0;
+        padding: 0 0 40px;
+        font-size: 1.25em;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-weight: 400;
+        color: #fff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar {
+        border-radius: 0;
+    }
+
+    .navbar-header {
+        display: none;
+    }
+
+    .navbar {
+        min-height: 0;
+    }
+
+    .navbar-default {
+        background: #fff;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+    }
+
+    .nav > li > a {
+        padding: 35px;
+    }
+
+    .navbar-nav > li > a {
+        line-height: normal;
+    }
+
+    .navbar-nav {
+        float: none;
+        margin: 0 auto;
+        display: table;
+        table-layout: fixed;
+        font-size: 1.25em;
+    }
+
+}
+
+@media screen and (min-width: 1200px) {
+    .box:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+/* changes, changes... */
+
+input, select, textarea {
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+}
+
+input[type=submit], .pager li > a, .pager li > span {
+    width: initial;
+    margin-top: 10px;
+    border: 0 none;
+    font-size: 14px;
+    padding: 6px 12px;
+    background-color: white;
+    color: #428bca;
+    letter-spacing: 0.1em;
+    font-weight: 300;
+    border-radius: 4px;
+    border: 1px solid #fafafa;
+    line-height: 1.428571429;
+}
+
+input[type=submit]:hover {
+    background: #f0f0f0;
+}
+
+input[type=text], textarea, input[type=password], input[type=email] {
+    border: 0;
+}
+
+label {
+    letter-spacing: 0.1em;
+    font-weight: 300;
+}
+
+textarea {
+    min-height: 300px;
+}
+
+form div, form {
+    text-align: center;
+}
+
+label {
+    margin-top: 10px;
+}
+
+.carousel-inner {
+    height: 429px;
+}
+
+@media (min-width: 992px) and (max-width: 1999px) {
+    .carousel-inner {
+        height: 380px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .carousel-inner {
+        height: 280px;
+    }
+}
+
+@media (max-width: 767px) {
+    .carousel-inner {
+        height: initial;
+        max-height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel {
+        display: none;
+    }
+}
+
+.brand a:hover {
+    text-decoration: none;
+    color: #428bca;
+}
+
+.mce-tinymce {
+    width: 70% !important;
+    margin: 0 auto !important;
+}
+
+.btn, .navbar-nav, body {
+    letter-spacing: 0.1em;
+    font-weight: 300 !important;
+}
+
+.navbar-nav > li > a:hover, .navbar-nav > li > a:active {
+    padding: 35px 35px 31px 35px;
+    border-bottom: 4px solid;
+}
+
+footer p {
+    padding: 20px 0;
+}

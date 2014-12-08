@@ -1,0 +1,17 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <hr>
+    <h2 class="intro-text text-center">
+        Usuń zdjecie
+    </h2>
+    <hr>
+    <div>
+        <h3>Czy na pewno chcesz usunąć to zdjęcie?</h3>
+
+        <form action="#" method="post">
+            {{ form_widget(form) }}
+        </form>
+    </div>
+
+{% endblock %}

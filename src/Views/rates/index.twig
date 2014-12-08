@@ -1,0 +1,15 @@
+{% extends 'layout.twig' %}
+{% block content %}
+    </table>
+    {% for rate in rates %}
+        <tr>
+            <td>
+                {{ rate.title|e }}
+            </td>
+            <td>
+                {{ rate.general|e }}
+            </td>
+        </tr>
+        </table>
+    {% endfor %}
+{% endblock %}

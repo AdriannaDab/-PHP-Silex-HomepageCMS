@@ -1,0 +1,215 @@
+<?php
+ /**
+ * Projects model
+ *
+ * PHP version 5
+ *
+ * @category Model
+ * @package  Model
+ * @author   Magdalena Limanówka <m.limanowka@uj.edu.pl>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  SVN: $id$
+ * @link     wierzba.wzks.uj.edu.pl/~12_limanowka
+ */
+namespace Model;
+
+use Silex\Application;
+
+/**
+ * Class ProjectsModel
+ *
+ * @category Model
+ * @package  Model
+ * @author   Magdalena Limanówka <m.limanowka@uj.edu.pl>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  Release: <package_version>
+ * @link     wierzba.wzks.uj.edu.pl/~12_limanowka
+ * @uses Doctrine\DBAL\DBALException
+ * @uses Silex\Application
+ */
+class ProjectsModel
+{
+
+    /**
+     * Database access object.
+     *
+     * @access protected
+     * @var $_db Doctrine\DBAL
+     */
+    protected $_db;
+
+    /**
+     * Class constructor.
+     *
+     * @param Application $app Silex application object
+     *
+     * @access public
+     */
+    public function __construct(Application $app)
+    {
+        $this->_db = $app['db'];
+    }
+
+    /**
+     * Gets one project.
+     *
+     * @param Integer $idproject project id
+     *
+     * @access public
+     * @return Array Associative array contains information about project.
+     */
+    public function getProject($idproject)
+    {
+        $sql = 'SELECT * FROM projects WHERE idproject = ? LIMIT 1';
+
+        return $this->_db->fetchAssoc($sql, array($idproject));
+    }
+
+    /**
+     * Gets all project.
+     *
+     * @access public
+     * @return Array Associative projects array.
+     */
+    public function getProjectList()
+    {
+        $sql = 'SELECT * FROM projects';
+        return $this->_db->fetchAll($sql);
+    }
+
+    /**
+     * Puts one post.
+     *
+     * @param  Array $data Associative array with information about project
+     *
+     * @access public
+     * @return Void
+     */
+    public function addProject($data)
+    {
+        $sql = 'INSERT INTO projects (title, description) 
+            VALUES (?,?)';
+        $this->_db->executeQuery(
+            $sql, array(
+                $data['title'], 
+                $data['description']
+            )
+        );
+    }
+
+    /**
+     * Updates one post.
+     *
+     * @param Array $data Associative array infrmation about project
+     *
+     * @access public
+     * @return Void
+     */
+    public function editProject($data)
+    {
+
+        if (isset($data['id']) 
+        && ctype_digit((string)$data['id'])) {
+            $sql = 'UPDATE projects 
+                    SET title = ?, description = ? 
+                    WHERE idproject = ?';
+            $this->_db->executeQuery(
+                $sql, array(
+                    $data['title'], 
+                    $data['description'], 
+                    $data['id']
+                )
+            );
+        } else {
+            $sql = 'INSERT INTO projects (title, description) VALUES (?,?)';
+            $this->_db->executeQuery(
+                $sql, array(
+                    $data['title'], 
+                    $data['description']
+                )
+            );
+        }
+    }
+
+    /**
+     * Delete one project.
+     *
+     * @param Array $data Associative array contains id project
+     *
+     * @access public
+     * @return Void
+     */
+    public function deleteProject($data)
+    {
+        $project = 'DELETE FROM `projects` WHERE `idproject`= ?';
+        $this->_db->executeQuery($project, array($data['idproject']));
+
+        $feedback = 'DELETE FROM `project_feedback` WHERE `idproject`= ?';
+        $this->_db->executeQuery($feedback, array($data['idproject']));
+
+        $rate = 'DELETE FROM `project_ratings` WHERE `idproject`= ?';
+        $this->_db->executeQuery($rate, array($data['idproject']));
+    }
+
+    /**
+     * Count Project Pages
+     *
+     * @param Integer $limit
+     *
+     * @access public
+     * @return Integer
+     */
+    public function countProjectsPages($limit)
+    {
+        $pagesCount = 0;
+        $sql = 'SELECT COUNT(*) as pages_count FROM projects';
+        $result = $this->_db->fetchAssoc($sql);
+        if ($result) {
+            $pagesCount = ceil($result['pages_count'] / $limit);
+        }
+        return $pagesCount;
+    }
+
+    /**
+     * Get Project pages
+     *
+     * @param Integer $page
+     * @param Integer $limit
+     * @param Integer $pagesCount
+     *
+     * @access public
+     * @return Array
+     */
+    public function getProjectsPage($page, $limit, $pagesCount)
+    {
+        if (($page <= 1) || ($page > $pagesCount)) {
+            $page = 1;
+        }
+        $sql = 'SELECT * FROM projects LIMIT :start, :limit';
+        $statement = $this->_db->prepare($sql);
+        $statement->bindValue('start', ($page - 1) * $limit, \PDO::PARAM_INT);
+        $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
+
+    /**
+     * Check if project id exists
+     *
+     * @param $idproject
+     *
+     * @access public
+     * @return bool
+     */
+    public function checkProjectId($idproject)
+    {
+        $sql = 'SELECT * FROM projects WHERE idproject=?';
+        $result = $this->_db->fetchAll($sql, array($idproject));
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

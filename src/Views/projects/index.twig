@@ -1,0 +1,44 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    {% if projects|length > 0 %}
+        <div>
+            {% for project in projects %}
+                <div class="col-lg-12 text-center">
+                    <hr>
+                    <h2 class="intro-text text-center">
+                        <a href="{{ url('/projects/view', {'id': project.idproject|e}) }}"
+                           title="View project">
+                            {{ project.title|e }}
+                        </a>
+                    </h2>
+                    <hr>
+                    <p>{{ project.description|raw }}</p>
+                    <hr>
+                </div>
+            {% endfor %}
+            <div class="col-lg-12 text-center">
+                <ul class="pager">
+                    {% if paginator.page > 1 %}
+                        {% set previous = (paginator.page - 1) %}
+                        <li class="previous"><a
+                                    href="{{ url('/projects/', {'page': previous}) }}">&larr;
+                                Poprzedni</a>
+                        </li>
+                    {% endif %}
+
+                    {% if paginator.page < paginator.pagesCount %}
+                        {% set next = (paginator.page + 1) %}
+                        <li class="next"><a
+                                    href="{{ url('/projects/', {'page': next}) }}">Następny &rarr;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <p>
+            Nie znaleziono projektu.
+        </p>
+    {% endif %}
+{% endblock %}

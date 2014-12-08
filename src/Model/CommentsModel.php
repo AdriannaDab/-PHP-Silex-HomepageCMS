@@ -1,0 +1,179 @@
+<?php
+ /**
+ * Blog comments model
+ *
+ * PHP version 5
+ *
+ * @category Model
+ * @package  Model
+ * @author   Magdalena Limanówka <m.limanowka@uj.edu.pl>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  SVN: $id$
+ * @link     wierzba.wzks.uj.edu.pl/~12_limanowka
+ */
+ 
+namespace Model;
+
+use Silex\Application;
+
+/**
+ * Class CommentModel
+ *
+ * @category Model
+ * @package  Model
+ * @author   Magdalena Limanówka <m.limanowka@uj.edu.pl>
+ * @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @version  Release: <package_version>
+ * @link     wierzba.wzks.uj.edu.pl/~12_limanowka
+ * @uses Doctrine\DBAL\DBALException
+ * @uses Silex\Application
+ */
+class CommentsModel
+{
+    /**
+     * Database access object.
+     *
+     * @access protected
+     * @var $_db Doctrine\DBAL
+     */
+    protected $_db;
+
+    /**
+     * Class constructor.
+     *
+     * @access public
+     * @param Application $app Silex application object
+     */
+    public function __construct(Application $app)
+    {
+        $this->_db = $app['db'];
+    }
+
+    /**
+     * Gets one comment.
+     *
+     * @param Integer $idcomment
+     *
+     * @access public
+     * @return array Associative array with comments
+     */
+    public function getComment($idcomment)
+    {
+        $sql = 'SELECT * FROM blog_comments WHERE idcomment = ? LIMIT 1';
+        return $this->_db->fetchAssoc($sql, array($idcomment));
+    }
+
+    /**
+     * Get all comments for one post
+     *
+     * @param $id post id
+     *
+     * @access public
+     * @internal param int $idpost
+     * @return Array Comment
+     */
+    public function getCommentsList($id)
+    {
+        $sql = 'SELECT * FROM blog_comments WHERE idpost = ?';
+        return $this->_db->fetchAll($sql, array($id));
+    }
+
+    /**
+     * Add one comment.
+     *
+     * @param  Array $data date about addcomment.
+     *
+     * @access public
+     * @return Void
+     */
+    public function addComment($data)
+    {
+        $sql = 'INSERT INTO blog_comments 
+            (content, published_date, idpost, iduser) 
+            VALUES (?,?,?,?)';
+        $this->_db
+            ->executeQuery(
+                $sql, 
+                array(
+                    $data['content'], 
+                    $data['published_date'], 
+                    $data['idpost'], 
+                    $data['iduser']
+                )
+            );
+    }
+
+    /**
+     * Updates one comment.
+     *
+     * @param Array $data date about update comment.
+     *
+     * @access public
+     * @return Void
+     */
+    public function editComment($data)
+    {
+
+        if (isset($data['idcomment']) 
+        && ctype_digit((string)$data['idcomment'])) {
+            $sql = 'UPDATE blog_comments 
+                SET content = ?, published_date = ? 
+            WHERE idcomment = ?';
+            $this->_db->executeQuery(
+                $sql, array(
+                    $data['content'], 
+                    $data['published_date'], 
+                    $data['idcomment']
+                )
+            );
+        } else {
+            $sql = 'INSERT INTO blog_comments 
+                (content, published_date, idpost, iduser) 
+            VALUES (?,?,?,?)';
+            $this->_db
+                ->executeQuery(
+                    $sql,
+                    array(
+                        $data['content'], 
+                        $data['published_date'], 
+                        $data['idpost'], 
+                        $data['idCurrentUser']
+                    )
+                );
+        }
+    }
+
+    /**
+     * Delete one comment.
+     *
+     * @param Array $data date about delete comment.
+     *
+     * @access public
+     * @return Void
+     */
+    public function deleteComment($data)
+    {
+        $sql = 'DELETE FROM `blog_comments` WHERE `idcomment`= ?';
+        $this->_db->executeQuery($sql, array($data['idcomment']));
+    }
+
+    /**
+     * Check if comment id exists
+     *
+     * @param $idcomment id comment
+     *
+     * @access public
+     * @return bool true if exists.
+     */
+    public function checkCommentId($idcomment)
+    {
+        $sql = 'SELECT * FROM blog_comments WHERE idcomment=?';
+        $result = $this->_db->fetchAll($sql, array($idcomment));
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
